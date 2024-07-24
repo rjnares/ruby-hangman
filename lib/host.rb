@@ -3,7 +3,8 @@
 # Host class
 class Host
   def initialize
-    @secret_word = choose_random_word
+    @secret_word_array = choose_random_word.split('')
+    @secret_word_progress_array = Array.new(@secret_word_array.size, '_')
   end
 
   private
