@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'host'
 require_relative 'game_io'
 
 # Game class
@@ -8,8 +7,7 @@ class Game
   include GameIO
 
   def initialize
-    @host = Host.new
-    @secret_word_array = @host.choose_random_word.split('')
+    @secret_word_array = choose_random_word.split('')
     @secret_word_progress_array = Array.new(@secret_word_array.length, '_')
     @incorrect_letters = []
     @incorrect_guesses_left = 7
@@ -57,5 +55,16 @@ class Game
   def update_incorrect(letter)
     @incorrect_letters << letter
     @incorrect_guesses_left -= 1
+  end
+
+  def choose_random_word
+    word_bank = []
+    file = File.open('google-10000-english-no-swears.txt')
+    until file.eof?
+      line = file.gets.chomp
+      word_bank << line if line.length.between?(5, 12)
+    end
+    file.close
+    word_bank.sample
   end
 end
