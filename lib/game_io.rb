@@ -2,8 +2,8 @@
 
 # Game I/O module
 module GameIO
-  def next_guess
-    print 'Next guess: '
+  def input_prompt
+    print "Type a single english letter for your next guess or 'save' to save the current game: "
     gets.chomp.downcase
   end
 
@@ -25,30 +25,30 @@ module GameIO
     puts
   end
 
-  def next_letter(word_progress_array, incorrect_letters, incorrect_guesses_left)
+  def next_input(word_progress_array, incorrect_letters, incorrect_guesses_left)
     display_turn_text(word_progress_array, incorrect_letters, incorrect_guesses_left)
-    next_guess_loop(word_progress_array, incorrect_letters)
+    next_input_loop(word_progress_array, incorrect_letters)
   end
 
-  def next_guess_loop(word_progress_array, incorrect_letters)
+  def next_input_loop(word_progress_array, incorrect_letters)
     loop do
-      guess = next_guess
-      if invalid_input?(guess)
+      input = input_prompt
+      if invalid_input?(input)
         invalid_input_warning
-      elsif previous_guess?(guess, incorrect_letters, word_progress_array)
-        previous_guess_warning(guess)
+      elsif previous_guess?(input, incorrect_letters, word_progress_array)
+        previous_guess_warning(input)
       else
-        return guess
+        return input
       end
     end
   end
 
   def invalid_input?(input)
-    !(input.length == 1 && input.between?('a', 'z'))
+    !(input == 'save' || input.length == 1 && input.between?('a', 'z'))
   end
 
-  def previous_guess?(letter, incorrect_letters, word_progress_array)
-    incorrect_letters.include?(letter) || word_progress_array.include?(letter)
+  def previous_guess?(input, incorrect_letters, word_progress_array)
+    incorrect_letters.include?(input) || word_progress_array.include?(input)
   end
 
   def game_lose(secret_word)
@@ -61,5 +61,10 @@ module GameIO
     puts "You have guessed the secret word '#{secret_word}'"
     puts 'Game over, you win!'
     puts
+  end
+
+  def game_saved(file)
+    puts "Your current game state has been saved to '#{file}'"
+    puts 'Continuing current game...'
   end
 end
