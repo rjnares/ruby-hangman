@@ -8,6 +8,7 @@ module GameIO
   end
 
   def display_turn_text(word_progress_array, incorrect_letters, incorrect_guesses_left)
+    puts
     puts "Word to guess: #{word_progress_array.join(' ')}"
     puts "Incorrect letters: #{incorrect_letters.join(' ')}"
     puts "Incorrect guesses left: #{incorrect_guesses_left}"
@@ -48,5 +49,17 @@ module GameIO
 
   def previous_guess?(letter, incorrect_letters, word_progress_array)
     incorrect_letters.include?(letter) || word_progress_array.include?(letter)
+  end
+
+  def game_lose
+    puts 'You have run out of guesses...'
+    puts 'Game over, you lose!'
+    puts
+  end
+
+  def game_win
+    puts 'You have guessed the secret word...'
+    puts 'Game over, you win!'
+    puts
   end
 end
