@@ -79,13 +79,11 @@ class Game
       incorrect_guesses_left: @incorrect_guesses_left
     }
 
-    yaml_string = YAML.dump(data_to_serialize)
-
     Dir.mkdir('game_saves') unless Dir.exist?('game_saves')
 
     filename = "game_saves/hangman #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}.yaml"
 
-    File.open(filename, 'w') { |file| file.write(yaml_string) }
+    File.open(filename, 'w') { |file| file.write(YAML.dump(data_to_serialize)) }
 
     game_saved(filename)
   end
