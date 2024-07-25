@@ -22,11 +22,11 @@ class Game
       update_game_state(letter)
 
       if word_guessed?
-        game_win
+        game_win(@secret_word_array.join)
         return
       end
 
-      game_lose if @incorrect_guesses_left.zero?
+      game_lose(@secret_word_array.join) if @incorrect_guesses_left.zero?
     end
   end
 

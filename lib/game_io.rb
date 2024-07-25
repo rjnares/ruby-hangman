@@ -51,14 +51,14 @@ module GameIO
     incorrect_letters.include?(letter) || word_progress_array.include?(letter)
   end
 
-  def game_lose
-    puts 'You have run out of guesses...'
+  def game_lose(secret_word)
+    puts "You have run out of guesses...the secret word was '#{secret_word}'"
     puts 'Game over, you lose!'
     puts
   end
 
-  def game_win
-    puts 'You have guessed the secret word...'
+  def game_win(secret_word)
+    puts "You have guessed the secret word '#{secret_word}'"
     puts 'Game over, you win!'
     puts
   end
