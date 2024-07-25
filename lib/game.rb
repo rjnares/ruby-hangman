@@ -7,11 +7,11 @@ require_relative 'game_io'
 class Game
   include GameIO
 
-  def initialize
-    @secret_word_array = choose_random_word.split('')
-    @secret_word_progress_array = Array.new(@secret_word_array.length, '_')
-    @incorrect_letters = []
-    @incorrect_guesses_left = 7
+  def initialize(game_data = new_game_data)
+    @secret_word_array = game_data[:secret_word_array]
+    @secret_word_progress_array = game_data[:secret_word_progress_array]
+    @incorrect_letters = game_data[:incorrect_letters]
+    @incorrect_guesses_left = game_data[:incorrect_guesses_left]
   end
 
   def play
@@ -29,7 +29,26 @@ class Game
     end
   end
 
+  def self.load_game(filename)
+    if File.file?(filename)
+      data = YAML.safe_load(File.read(filename), permitted_classes: [Symbol])
+      new(data)
+    else
+      new
+    end
+  end
+
   private
+
+  def new_game_data
+    random_word = choose_random_word
+    {
+      secret_word_array: random_word.split(''),
+      secret_word_progress_array: Array.new(random_word.length, '_'),
+      incorrect_letters: [],
+      incorrect_guesses_left: 7
+    }
+  end
 
   def word_guessed?
     @secret_word_array == @secret_word_progress_array
